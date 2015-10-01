@@ -1,0 +1,29 @@
+/* A simple test harness for memory alloction. */
+
+#include "mm_alloc.h"
+#include <stdio.h>
+int main(int argc, char **argv)
+{
+  int *data,*data1,*data2;
+
+    data = (int*) mm_malloc(8);
+    data[0] = 1;
+    data[1] = 2;
+    data1 = (int*) mm_malloc(4);
+    data1[0] = 23; 
+    data2 = (int*) mm_malloc(64);
+    data2[0] = 546231;
+    printf("data %i , data1 %i , data2 %i\n" , *data, *data1,*data2);
+    mm_free(data);
+    printf("data %i , data1 %i , data2 %i\n" , *data, *data1,*data2);
+    printf("malloc sanity test successful!\n");
+    print(head);
+    return 0;
+}
+
+void print(struct s_block *ths){
+  while(ths!= NULL){
+    printf("%i \n" , ths->free);
+    ths = ths->next;
+  }
+}
