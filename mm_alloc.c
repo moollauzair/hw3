@@ -1,18 +1,9 @@
-/*
- * mm_alloc.c
- *
- * Stub implementations of the mm_* routines. Remove this comment and provide
- * a summary of your allocator's design here.
- */
-
 #include "mm_alloc.h"
 #include <unistd.h>
 #include <stdlib.h>
 
 /* Your final implementation should comment out this macro. */
 #define MM_USE_STUBS
-
-
 
 void* mm_malloc(size_t size)
 {
@@ -29,9 +20,21 @@ void* mm_malloc(size_t size)
     while(temp->next != NULL){ 
       if(temp->free == 1 && temp->size == size){
 	temp->next->prev = temp;
-	temp->ptr = sbrk(size);
-	temp->size = size;
+	//temp->ptr = sbrk(size);
+	//temp->size = size;
 	temp->free = 0;
+	return temp->ptr;
+      }
+      else if(temp->free == 1 && temp->size > size){
+	struct s_block *new;
+	temp->next->prev = temp;
+	new = temp->data + size;
+	new->size = temp->size - size;
+	temp->size = size;
+	new->next = temp->next;
+	temp->next = new;
+	temp->free = 0;
+	new->free = 1;
 	return temp->ptr;
       }
       else{
@@ -70,5 +73,6 @@ void mm_free(void* ptr)
       return;
     }
       temp = temp->next;
+
   }  
 }
